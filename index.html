@@ -20,6 +20,7 @@
     <script src="http://youtube.com/iframe_api"></script>
     <script>
 		//-- Resize the height
+		var height = 1;
 		$(document).ready(function(){
 			height = Math.floor( ( window.innerHeight || document.body.clientHeight ) / 2);
 			$('.changeheight').css('height',height)
@@ -35,12 +36,13 @@
     channel.bind('payment_made', function(data) {
       console.log('Ka-ching!');
       console.log(data);
-      var missingDiv = '<div class="missing-person" style="position: absolute; top:0; left:0; width: 100%; background: #B8860B; color: black" >';
-      missingDiv += '<p style="text-align: center;">$$$SOLD$$$$</p>';
-      missingDiv += '</div>';
+      // var payDiv = '<div class="missing-person" style="position: absolute; top:0; left:0; width: 50%; height: '+height+'px; background: #B8860B; color: #339933" >';
+			// payDiv += '<p style="text-align: center;">$$$SOLD$$$$</p>';
+			// payDiv += '</div>';
       var displayId = '#display-'+data;
-      // var displayId = '#display-1';
-      $(displayId).append(missingDiv);
+      var payDiv = '<img src="http://australianmastermarine.com.au/wp-content/uploads/2012/06/stamp_sold.png" width="100%" />'
+      // var displayId = '#display-3';
+      $(displayId).html(payDiv);
       //-- Play a sound - cha chinnngggg
       var snd = new Audio("ching.wav"); // buffers automatically when created
       snd.play();
@@ -183,7 +185,7 @@ function grabRandomAdvert()
      }
 
      function onPlayerReady(event) {
-			player.mute();
+			event.target.mute();
      // 	event.target.setVolume(100);
      	event.target.playVideo();
      }
