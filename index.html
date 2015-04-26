@@ -36,6 +36,29 @@
     var pusher = new Pusher('9de656c016ae635fd977');
     var channel = pusher.subscribe('adverts');
 
+    channel.bind('payment_made', function(data) {
+      console.log('Ka-ching!');
+      console.log(data);
+      var missingDiv = '<div class="missing-person" style="position: absolute; top:0; left:0; width: 100%; background: #B8860B; color: black" >';
+      missingDiv += '<p style="text-align: center;">$$$SOLD$$$$</p>';
+      missingDiv += '</div>';
+      var displayId = '#display-'+data;
+      // var displayId = '#display-1';
+      $(displayId).append(missingDiv);
+      //-- Play a sound - cha chinnngggg
+      var snd = new Audio("ching.wav"); // buffers automatically when created
+      snd.play();
+    });
+
+    channel.bind('missing_person', function(data) {
+      console.log('Found!');
+      var missingDiv = '<div class="missing-person" style="position: absolute; top:0; left:0; width: 100%; background: red; color: black" >';
+      missingDiv += '<p style="text-align: center;">'+data.name+' missing!</p>';
+      missingDiv += '</div>';
+      var displayId = '#display-'+data.display;
+      $(displayId).append(missingDiv);
+    });
+
     channel.bind('display_advert', function(data) {
 
     	/*
