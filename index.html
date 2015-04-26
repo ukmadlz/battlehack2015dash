@@ -6,29 +6,25 @@
     <link href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
   </head>
   <body style="background: black">
-    <div class="container">
-      <div class="row">
-        <!-- Block 1 -->
-        <div id="display-1" class="col-md-6">
-        </div>
-        <!-- Block 2 -->
-        <div id="display-2"  class="col-md-6">
-        </div>
-      </div>
-      <div class="row" >
-        <!-- Block 3 -->
-        <div id="display-3"  class="col-md-6">
-        </div>
-        <!-- Block 4 -->
-        <div id="display-4"  class="col-md-6">
-        </div>
-      </div>
-    </div>
+		<div style="width: 100%;">
+			<div id="display-1" class="changeheight" style="float: left; width: 50%;"></div>
+			<div id="display-2" class="changeheight" style="float: left; width: 50%;"></div>
+		</div>
+		<div style="width: 100%;">
+			<div id="display-3" class="changeheight" style="float: left; width: 50%;"></div>
+			<div id="display-4" class="changeheight" style="float: left; width: 50%;"></div>
+		</div>
     <script src="http:////code.jquery.com/jquery-1.11.2.min.js" ></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" ></script>
     <script src="http://js.pusher.com/2.2/pusher.min.js"></script>
     <script src="http://youtube.com/iframe_api"></script>
     <script>
+		//-- Resize the height
+		$(document).ready(function(){
+			height = Math.floor( ( window.innerHeight || document.body.clientHeight ) / 2);
+			$('.changeheight').css('height',height)
+		});
+
     //-- Application JS
     var iAmViewing = 99
 
@@ -187,7 +183,8 @@ function grabRandomAdvert()
      }
 
      function onPlayerReady(event) {
-     	event.target.setVolume(100);
+			player.mute();
+     // 	event.target.setVolume(100);
      	event.target.playVideo();
      }
     </script>
