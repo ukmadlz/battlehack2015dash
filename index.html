@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Dashboard</title>
+		<meta charset="utf-8">
+    <link href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  </head>
+  <body style="background: black">
+    <div class="container">
+      <div class="row">
+        <!-- Block 1 -->
+        <div id="display-1" class="col-md-6">
+        </div>
+        <!-- Block 2 -->
+        <div id="display-2"  class="col-md-6">
+        </div>
+      </div>
+      <div class="row" >
+        <!-- Block 3 -->
+        <div id="display-3"  class="col-md-6">
+        </div>
+        <!-- Block 4 -->
+        <div id="display-4"  class="col-md-6">
+        </div>
+      </div>
+    </div>
+    <script src="http:////code.jquery.com/jquery-1.11.2.min.js" ></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" ></script>
+    <script src="http://js.pusher.com/2.2/pusher.min.js"></script>
+    <script src="http://youtube.com/iframe_api"></script>
+    <script>
+    //-- Application JS
+    var iAmViewing = 99
+
+    //-- Pusher info
+    var pusher = new Pusher('9de656c016ae635fd977');
+    var channel = pusher.subscribe('adverts');
+
+    channel.bind('display_advert', function(data) {
+
+    	/*
+    	 * Paramters
+    	 *
+    	 * data.display = The id of the display we need to change
+    	 * data.type    = The type of advert
+    	 * data.data    = The data for the advert
+    	 * data.duration = The time on this advert
+    	 * data.id = The persons id
+    	 */
+
+    	 console.log('Update Display: ' + data.display);
+    	 console.log(data,iAmViewing);
+
+    	 	//-- Check to make sure if I have an ID
+    	 	if (data.id != iAmViewing) {
+    	 		//-- Display
+    	 		display(data.type, data.data, data.display);
+    	 		//-- Show the ad for DURATION seconds
+    			timeToReset = moment().add(data.duration, 'seconds');
+    			iAmViewing = data.id;
+    	 	}
+
+    	 	//-- Set person timeout
+    	 	if (data.id != 0) {
+    			testStillHere = moment().add(5, 'seconds');
+    		}
+
+    });
+
+
+    function checkNewAdvert()
+{
+	//-- Shall we get a new advert?
+	if (timeToReset.isBefore(moment())) {
+		//-- Need to get a new advert
+		// console.log("New ad needed");
+		grabRandomAdvert();
+		iAmViewing = 99;
+	}
+
+	//-- Check me again in 1 seconds
+	window.setTimeout(checkNewAdvert, 1000);
+}
+
+function autoChange()
+{
+	if ((iAmViewing != 99) && (iAmViewing != 0)) {
+		console.log("Checking you are still there: ["+ iAmViewing+"]");
+		if (testStillHere.isBefore(moment())) {
+			grabRandomAdvert();
+			iAmViewing = 99;
+		}
+	}
+
+	//-- Check me again in 1 seconds
+	window.setTimeout(autoChange, 1000);
+}
+
+function grabRandomAdvert()
+{
+	$.ajax({
+        type: "GET",
+        url: "http://battle.curtish.me/advert?beaconId="+viewer_id,
+    });
+}
+
+/*
+ * getParameterByName
+ *
+ * Gets a specific param - http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+ */
+ function getParameterByName(name)
+ {
+ 	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+ 	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+ 	results = regex.exec(location.search);
+ 	return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+ }
+
+    /*
+     * display
+     *
+     * Display allows us to take in a type of advert (HTML, video or image)
+     * and have it displayed to all
+     *
+     * @param type The type of advert
+     * @param data data we get to convert
+     */
+     function display(type, data, id)
+     {
+
+       var displayId = '#display-'+id;
+    	//-- Clean the page
+    	$(displayId).fadeOut();
+    	$(displayId).html('');
+      // $(displayId).css('background-image','none');
+
+    	if (type == "image") {
+    		//-- An image will take in data - which is a link to an image (URL OR LOCAL)
+    		// $(displayId).css('background-image', 'url(' + data + ')');
+    		$(displayId).html('<img src="'+data+'" width="100%" />');
+    	} else if (type == "video") {
+    		//-- Videos will be youtube for testing. Data needs to be youtube video ID (dMH0bHeiRNg)
+    		$(displayId).html('<iframe id="ytplayer" type="text/html" width="100%" height="100%" src="http://www.youtube.com/embed/' + data + '?autoplay=1&rel=0&controls=0&showinfo=0&loop=1&hd=1&modestbranding=1&enablejsapi=1&playerapiid=ytplayer" frameborder="0" allowfullscreen></iframe>');
+    		arf();
+    	} else if (type == "html") {
+    		//-- Display HTML in content
+    		$(displayId).html(data);
+    	}
+    	$(displayId).fadeIn();
+    }
+
+
+    /*
+     * Youtube player stuff
+     */
+     var player;
+     function arf() {
+     	player = new YT.Player('ytplayer', {
+     		events: {
+     			'onReady': onPlayerReady
+     		}
+     	});
+     }
+
+     function onPlayerReady(event) {
+     	event.target.setVolume(100);
+     	event.target.playVideo();
+     }
+    </script>
+  </body>
+</html>

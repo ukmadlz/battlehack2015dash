@@ -1,0 +1,19 @@
+{
+  "name": "battlehack2015dash",
+  "version": "0.0.0",
+  "authors": [
+    "Mike Elsmore <mike.elsmore@uk.ibm.com>"
+  ],
+  "license": "Apache 2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pusher": "~2.2.4",
+    "bootstrap": "~3.3.4"
+  }
+}
