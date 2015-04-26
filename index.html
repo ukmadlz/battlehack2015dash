@@ -7,12 +7,12 @@
   </head>
   <body style="background: black">
 		<div style="width: 100%;">
-			<div id="display-1" class="changeheight" style="float: left; width: 50%;"></div>
-			<div id="display-2" class="changeheight" style="float: left; width: 50%;"></div>
+			<div id="display-1" class="changeheight" style="float: left; width: 50%; position: relative;"></div>
+			<div id="display-2" class="changeheight" style="float: left; width: 50%; position: relative;"></div>
 		</div>
 		<div style="width: 100%;">
-			<div id="display-3" class="changeheight" style="float: left; width: 50%;"></div>
-			<div id="display-4" class="changeheight" style="float: left; width: 50%;"></div>
+			<div id="display-3" class="changeheight" style="float: left; width: 50%; position: relative;"></div>
+			<div id="display-4" class="changeheight" style="float: left; width: 50%; position: relative;"></div>
 		</div>
     <script src="http:////code.jquery.com/jquery-1.11.2.min.js" ></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" ></script>
@@ -40,7 +40,7 @@
 			// payDiv += '<p style="text-align: center;">$$$SOLD$$$$</p>';
 			// payDiv += '</div>';
       var displayId = '#display-'+data;
-      var payDiv = '<img src="http://australianmastermarine.com.au/wp-content/uploads/2012/06/stamp_sold.png" width="100%" />'
+      var payDiv = '<img src="http://www.gerardcollins.com.au/wp-content/themes/gerardcollins/images/sold.png" style="position: absolute; top: 0; left: 0;" />';
       // var displayId = '#display-3';
       $(displayId).html(payDiv);
       //-- Play a sound - cha chinnngggg
@@ -50,10 +50,10 @@
 
     channel.bind('missing_person', function(data) {
       console.log('Found!');
-      var missingDiv = '<div class="missing-person" style="position: absolute; top:0; left:0; width: 100%; background: red; color: black" >';
-      missingDiv += '<p style="text-align: center;">'+data.name+' missing!</p>';
+      var missingDiv = '<div class="missing-person" style="position: absolute; top:0; left:0; width: 100%; background: red; color: black; padding: 0px;" >';
+      missingDiv += '<h1 style="text-align: center;">'+data.name+' has been found!</p>';
       missingDiv += '</div>';
-      var displayId = '#display-'+data.display;
+      var displayId = '#display-'+data.display
       $(displayId).append(missingDiv);
     });
 
