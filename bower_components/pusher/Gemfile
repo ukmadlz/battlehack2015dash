@@ -5,7 +5,7 @@ group :development do
   gem 'rake'
   gem 'jbundle', :github => 'mloughran/jbundle'
   gem 'aws-s3', '~> 0.6.0'
-  gem 'httparty'
+  gem 'httparty', '>= 0.21.0'
   # testing
   gem 'jasmine', '~> 1.2.0'
   # jasmine guard integration
